@@ -26,16 +26,22 @@ answers = [
 # Índice de la respuesta correcta para cada pregunta, el el
 # mismo orden que las preguntas
 correct_answers_index = [1, 2, 0, 3, 1]
+
+# Se arma el zip
+questions_to_ask = random.choices(list(
+    zip(questions, answers, correct_answers_index)), k=3)
+
 # Inicializo puntaje
 puntaje = 0
+
 # El usuario deberá contestar 3 preguntas
-for _ in range(3):
-    # Se selecciona una pregunta aleatoria
-    question_index = random.randint(0, len(questions)-1)
-    # Se muestra la pregunta y las respuestas posibles
-    print(questions[question_index])
-    for i, answer in enumerate(answers[question_index]):
-        print(f"{i + 1}. {answer}")
+for question, answer, correct_answer in questions_to_ask:
+    # Se imprime la pregunta seleccionada
+    print(question)
+
+    # Se muestran las respuestas posibles
+    for i, ans in enumerate(answer, 1):
+        print(f"{i}. {ans}")
     # El usuario tiene 2 intentos para responder correctamente
     for intento in range(2):
         user_answer = input("Respuesta: ")
@@ -43,20 +49,19 @@ for _ in range(3):
             print("Respuesta no válida")
             exit(1)
         # Se verifica si la respuesta es correcta
-        user_answer = int(user_answer)-1
-        if user_answer == correct_answers_index[question_index]:
+        user_answer = int(user_answer) - 1
+        if (user_answer == correct_answer):
             print("¡Correcto!")
             # Sumo puntaje
             puntaje += 1
             break
         else:
             # Resto puntaje
-            puntaje += -0.5
+            puntaje -= 0.5
             # Si el usuario no responde correctamente después de 2 intentos,
             # se muestra la respuesta correcta
             print("Incorrecto. La respuesta correcta es:")
-            print(answers[question_index]
-                  [correct_answers_index[question_index]])
+            print(answer[correct_answer])
 # Se imprime un blanco al final de la pregunta
 print()
 print(f"Puntaje final: {puntaje}")
